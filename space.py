@@ -21,13 +21,27 @@ green = (0, 255, 0)
 # smaller_font = pygame.font.Font(r'assets/misc/Roboto-Bold.ttf', 30)
 # big_font = pygame.font.Font(r'assets/misc/Roboto-Bold.ttf', 75)
 # bigger_font = pygame.font.Font(r'assets/misc/Roboto-Bold.ttf', 90)
+        # Define the ships
+ship1 = pygame.image.load("sprites/space_ship1.png")
+ship2 = pygame.image.load("sprites/space_ship2.png")
+ship3 = pygame.image.load("sprites/space_ship3.png")
+ship4 = pygame.image.load("sprites/space_ship4.png")
+ship5 = pygame.image.load("sprites/space_ship5.png")
+ship6 = pygame.image.load("sprites/space_ship6.png")
+ship7 = pygame.image.load("sprites/space_ship7.png")
+ship8 = pygame.image.load("sprites/space_ship8.png")
+ship9 = pygame.image.load("sprites/space_ship9.png")
+ship10 = pygame.image.load("sprites/space_ship10.png")
+
+# Add the ships to a list
+ships = [ship1, ship2, ship3, ship4, ship5, ship6, ship7, ship8, ship9, ship10]
 
 class Spaceship(pygame.sprite.Sprite):
     MANEUVERABILITY = 3
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("sprites/space_ship8.png")
+        self.image = random.choice(ships)
         self.rect = self.image.get_rect()
         self.rect.centerx = width // 2
         self.rect.bottom = height - 10
@@ -35,15 +49,29 @@ class Spaceship(pygame.sprite.Sprite):
         self.speed_x = 0
         self.speed_y = 0
     
-    def move(self, direction):
-        if direction == "left":
+    def move(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT]:
             self.speed_x -= 5
-        elif direction == "right":
+            self.rect.left = max(20, self.rect.left + self.speed_x)
+        if key[pygame.K_RIGHT]:
             self.speed_x += 5
-        elif direction == "up":
+            self.rect.right = min(screen.get_height() - 20, self.rect.right + self.speed_x)
+        if key[pygame.K_UP]:
             self.speed_y -= 5
-        elif direction == "down":
+            self.rect.top = max(20, self.rect.top + self.speed_y)
+        if key[pygame.K_DOWN]:
             self.speed_y += 5
+            self.rect.bottom = min(screen.get_width() - 20, self.rect.bottom + self.speed_y)
+        
+        # if direction == "left":
+        #     self.speed_x -= 5
+        # elif direction == "right":
+        #     self.speed_x += 5
+        # elif direction == "up":
+        #     self.speed_y -= 5
+        # elif direction == "down":
+        #     self.speed_y += 5
 
     def rotate(self, clockwise=True):
         sign = 1 if clockwise else -1
@@ -104,17 +132,20 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-            elif event.key == pygame.K_LEFT:
-                space1.move("left")
-            elif event.key == pygame.K_RIGHT:
-                space1.move("right")
-            elif event.key == pygame.K_UP:
-                space1.move("up")
-            elif event.key == pygame.K_DOWN:
-                space1.move("down")
+
+        space1.move()
+
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_ESCAPE:
+        #         running = False
+        #     elif event.key == pygame.K_LEFT:
+        #         space1.move("left")
+        #     elif event.key == pygame.K_RIGHT:
+        #         space1.move("right")
+        #     elif event.key == pygame.K_UP:
+        #         space1.move("up")
+        #     elif event.key == pygame.K_DOWN:
+        #         space1.move("down")
         # elif event.type == NEW_SPACE_ROCK:
 
     # Scroll the map
